@@ -32,7 +32,7 @@
     <!-- Register Servlet -->
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>com.mystrive.controller.RegisterServlet</servlet-class>
+        <servlet-class>java.com.mystrive.controller.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -42,7 +42,7 @@
     <!-- Login Servlet -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.mystrive.controller.LoginServlet</servlet-class>
+        <servlet-class>java.com.mystrive.controller.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -52,7 +52,7 @@
     <!-- Logout Servlet -->
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.mystrive.controller.LogoutServlet</servlet-class>
+        <servlet-class>java.com.mystrive.controller.LogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
@@ -62,7 +62,7 @@
     <!-- Goal Management Servlet -->
     <servlet>
         <servlet-name>GoalServlet</servlet-name>
-        <servlet-class>com.mystrive.controller.GoalServlet</servlet-class>
+        <servlet-class>java.com.mystrive.controller.GoalServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GoalServlet</servlet-name>
@@ -72,7 +72,7 @@
     <!-- Category Management Servlet -->
     <servlet>
         <servlet-name>CategoryServlet</servlet-name>
-        <servlet-class>com.mystrive.controller.CategoryServlet</servlet-class>
+        <servlet-class>java.com.mystrive.controller.CategoryServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CategoryServlet</servlet-name>
@@ -82,7 +82,7 @@
     <!-- Milestone Management Servlet -->
     <servlet>
         <servlet-name>MilestoneServlet</servlet-name>
-        <servlet-class>com.mystrive.controller.MilestoneServlet</servlet-class>
+        <servlet-class>java.com.mystrive.controller.MilestoneServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MilestoneServlet</servlet-name>
