@@ -1,4 +1,4 @@
-package java.com.mystrive.controller;
+package com.mystrive.controller;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -31,7 +31,7 @@ public class LogoutServlet extends HttpServlet {
         if (session != null) {
             String username = null;
             if (session.getAttribute("currentUser") != null) {
-                username = ((java.com.mystrive.model.User) session.getAttribute("currentUser")).getUsername();
+                username = ((com.mystrive.model.User) session.getAttribute("currentUser")).getUsername();
             }
             session.invalidate(); // Invalidate the session
             LOGGER.log(Level.INFO, "User {0} logged out and session invalidated.", username != null ? username : "unknown");

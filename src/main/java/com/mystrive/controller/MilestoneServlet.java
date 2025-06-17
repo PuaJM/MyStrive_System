@@ -1,11 +1,10 @@
-package java.com.mystrive.controller;
+package com.mystrive.controller;
 
-import java.com.mystrive.model.Milestone;
-import java.com.mystrive.model.Goal;
-import java.com.mystrive.model.User;
-import java.com.mystrive.dao.MilestoneDAO;
-import java.
-        com.mystrive.dao.GoalDAO; // Needed to verify goal ownership and retrieve goal details
+import com.mystrive.model.Milestone;
+import com.mystrive.model.Goal;
+import com.mystrive.model.User;
+import com.mystrive.dao.MilestoneDAO;
+import com.mystrive.dao.GoalDAO; // Needed to verify goal ownership and retrieve goal details
 
 import java.io.IOException;
 import java.sql.Date;

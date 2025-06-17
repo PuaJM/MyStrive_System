@@ -1,7 +1,7 @@
-package java.com.mystrive.controller;
+package com.mystrive.controller;
 
-import java.com.mystrive.model.User;
-import java.com.mystrive.dao.UserDAO;
+import com.mystrive.model.User;
+import com.mystrive.dao.UserDAO;
 
 import java.io.IOException;
 import java.util.logging.Level;

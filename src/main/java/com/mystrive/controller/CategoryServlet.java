@@ -1,8 +1,8 @@
-package java.com.mystrive.controller;
+package com.mystrive.controller;
 
-import java.com.mystrive.model.Category;
-import java.com.mystrive.model.User;
-import java.com.mystrive.dao.CategoryDAO;
+import com.mystrive.model.Category;
+import com.mystrive.model.User;
+import com.mystrive.dao.CategoryDAO;
 
 import java.io.IOException;
 import java.util.List;

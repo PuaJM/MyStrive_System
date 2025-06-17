@@ -1,12 +1,12 @@
-package java.com.mystrive.controller;
+package com.mystrive.controller;
 
-import java.com.mystrive.model.Goal;
-import java.com.mystrive.model.User;
-import java.com.mystrive.model.Category;
-import java.com.mystrive.model.Milestone; 
-import java.com.mystrive.dao.GoalDAO;
-import java.com.mystrive.dao.CategoryDAO;
-import java.com.mystrive.dao.MilestoneDAO; 
+import com.mystrive.model.Goal;
+import com.mystrive.model.User;
+import com.mystrive.model.Category;
+import com.mystrive.model.Milestone; 
+import com.mystrive.dao.GoalDAO;
+import com.mystrive.dao.CategoryDAO;
+import com.mystrive.dao.MilestoneDAO; 
 
 import java.io.IOException;
 import java.sql.Date;
