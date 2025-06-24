@@ -4,9 +4,8 @@
  */
 package com.mystrive.dao;
 
-
 import com.mystrive.model.Goal;
-import com.mystrive.model.Category; 
+import com.mystrive.model.Category;
 import com.mystrive.util.DBConnection;
 
 import java.sql.Connection;
@@ -20,10 +19,72 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class GoalDAO {
 
     private static final Logger LOGGER = Logger.getLogger(GoalDAO.class.getName());
+
+    public List<Goal> getAllGoalsByUserIdAndCategoryId(int userId, int categoryId) {
+        List<Goal> goals = new ArrayList<>(); // Initialize an empty list to store filtered goals.
+        // SQL query with a LEFT JOIN to get category_name.
+        // It filters by both user_id AND category_id.
+        String SQL_SELECT_FILTERED = "SELECT g.goal_id, g.user_id, g.category_id, g.goal_description, g.target_date, g.status, g.created_at, g.updated_at, c.category_name "
+                + "FROM goals g LEFT JOIN categories c ON g.category_id = c.category_id "
+                + "WHERE g.user_id = ? AND g.category_id = ? "
+                + // New WHERE clause condition
+                "ORDER BY g.target_date ASC, g.goal_id DESC";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConnection.getConnection();
+            if (connection != null) {
+                preparedStatement = connection.prepareStatement(SQL_SELECT_FILTERED);
+                preparedStatement.setInt(1, userId);     // Set the user_id parameter.
+                preparedStatement.setInt(2, categoryId); // Set the category_id parameter for filtering.
+
+                resultSet = preparedStatement.executeQuery();
+
+                // Iterate through the ResultSet and populate Goal objects.
+                while (resultSet.next()) {
+                    Goal goal = new Goal();
+                    goal.setGoalId(resultSet.getInt("goal_id"));
+                    goal.setUserId(resultSet.getInt("user_id"));
+                    // Check for null category_id from the database using getObject.
+                    if (resultSet.getObject("category_id") != null) {
+                        goal.setCategoryId(resultSet.getInt("category_id"));
+                    } else {
+                        goal.setCategoryId(null); // Explicitly set to null if DB value is null.
+                    }
+                    goal.setGoalDescription(resultSet.getString("goal_description"));
+                    goal.setTargetDate(resultSet.getDate("target_date"));
+                    goal.setStatus(resultSet.getString("status"));
+                    goal.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    goal.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    // Set the categoryName from the joined 'categories' table.
+                    goal.setCategoryName(resultSet.getString("category_name"));
+                    goals.add(goal); // Add the populated Goal object to the list.
+                }
+                LOGGER.log(Level.INFO, "{0} goals retrieved for user ID {1} and category ID {2}.",
+                        new Object[]{goals.size(), userId, categoryId});
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error retrieving goals for user ID " + userId + " and category ID " + categoryId + ": " + e.getMessage(), e);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                DBConnection.closeConnection(connection);
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error closing resources after retrieving filtered goals.", e);
+            }
+        }
+        return goals; // Return the list of filtered goals.
+    }
 
     public boolean addGoal(Goal goal) {
         String SQL_INSERT = "INSERT INTO goals (user_id, category_id, goal_description, target_date, status) VALUES (?, ?, ?, ?, ?)";
@@ -60,7 +121,9 @@ public class GoalDAO {
             LOGGER.log(Level.SEVERE, "Error adding goal: " + e.getMessage(), e);
         } finally {
             try {
-                if (preparedStatement != null) preparedStatement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 DBConnection.closeConnection(connection);
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, "Error closing resources after adding goal.", e);
@@ -72,9 +135,9 @@ public class GoalDAO {
     public List<Goal> getAllGoalsByUserId(int userId) {
         List<Goal> goals = new ArrayList<>();
         // Join with categories table to get category name
-        String SQL_SELECT = "SELECT g.goal_id, g.user_id, g.category_id, g.goal_description, g.target_date, g.status, g.created_at, g.updated_at, c.category_name " +
-                            "FROM goals g LEFT JOIN categories c ON g.category_id = c.category_id " +
-                            "WHERE g.user_id = ? ORDER BY g.target_date ASC, g.goal_id DESC"; // Order by target date and then ID
+        String SQL_SELECT = "SELECT g.goal_id, g.user_id, g.category_id, g.goal_description, g.target_date, g.status, g.created_at, g.updated_at, c.category_name "
+                + "FROM goals g LEFT JOIN categories c ON g.category_id = c.category_id "
+                + "WHERE g.user_id = ? ORDER BY g.target_date ASC, g.goal_id DESC"; // Order by target date and then ID
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -112,8 +175,12 @@ public class GoalDAO {
             LOGGER.log(Level.SEVERE, "Error retrieving goals for user ID " + userId + ": " + e.getMessage(), e);
         } finally {
             try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 DBConnection.closeConnection(connection);
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, "Error closing resources after retrieving goals.", e);
@@ -123,9 +190,9 @@ public class GoalDAO {
     }
 
     public Goal getGoalById(int goalId) {
-        String SQL_SELECT = "SELECT g.goal_id, g.user_id, g.category_id, g.goal_description, g.target_date, g.status, g.created_at, g.updated_at, c.category_name " +
-                            "FROM goals g LEFT JOIN categories c ON g.category_id = c.category_id " +
-                            "WHERE g.goal_id = ?";
+        String SQL_SELECT = "SELECT g.goal_id, g.user_id, g.category_id, g.goal_description, g.target_date, g.status, g.created_at, g.updated_at, c.category_name "
+                + "FROM goals g LEFT JOIN categories c ON g.category_id = c.category_id "
+                + "WHERE g.goal_id = ?";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -163,8 +230,12 @@ public class GoalDAO {
             LOGGER.log(Level.SEVERE, "Error retrieving goal by ID " + goalId + ": " + e.getMessage(), e);
         } finally {
             try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 DBConnection.closeConnection(connection);
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, "Error closing resources after retrieving goal by ID.", e);
@@ -207,7 +278,9 @@ public class GoalDAO {
             LOGGER.log(Level.SEVERE, "Error updating goal ID " + goal.getGoalId() + ": " + e.getMessage(), e);
         } finally {
             try {
-                if (preparedStatement != null) preparedStatement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 DBConnection.closeConnection(connection);
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, "Error closing resources after updating goal.", e);
@@ -243,7 +316,9 @@ public class GoalDAO {
             LOGGER.log(Level.SEVERE, "Error deleting goal ID " + goalId + ": " + e.getMessage(), e);
         } finally {
             try {
-                if (preparedStatement != null) preparedStatement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 DBConnection.closeConnection(connection);
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, "Error closing resources after deleting goal.", e);
@@ -252,4 +327,3 @@ public class GoalDAO {
         return success;
     }
 }
-

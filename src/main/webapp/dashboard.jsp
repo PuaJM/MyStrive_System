@@ -1,24 +1,60 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-<%-- Include the common header fragment --%>
-<jsp:include page="header.jsp" />
+<%--
+    dashboard.jsp
+    This is the main dashboard page of the MyStrive application, displaying a list of goals
+    for the currently logged-in user. It now features enhanced sidebar navigation
+    to filter goals by specific categories.
+--%>
+<%-- Step 1: Include the common header fragment. --%>
+<jsp.include page="header.jsp" />
 
 <div class="dashboard-layout">
     <div class="sidebar">
         <h3>Navigation</h3>
         <ul>
-            <li><a href="${pageContext.request.contextPath}/goals"><i class="fas fa-bullseye"></i> All Goals</a></li>
+            <%-- Step 2: "All Goals" Filter Link. --%>
+            <%-- This link ensures the user can always revert to viewing all their goals,
+                 regardless of any active category filter. --%>
+            <li <c:if test="${requestScope.selectedCategoryId == 0}">class="active-filter"</c:if>>
+                <a href="${pageContext.request.contextPath}/goals"><i class="fas fa-bullseye"></i> All Goals</a>
+            </li>
+            <%-- Line separator for visual distinction. --%>
+            <li style="border-bottom: 1px solid #ddd; margin-bottom: 10px; padding-bottom: 5px;"></li>
+
+            <h3>Categories</h3>
+            <%-- Step 3: Loop to Display Category Filter Links. --%>
+            <%-- This loop iterates through the 'categoriesForSidebar' list provided by GoalServlet.
+                 Each category becomes a clickable link to filter goals. --%>
+            <c:choose>
+                <c:when test="${not empty requestScope.categoriesForSidebar}">
+                    <c:forEach var="category" items="${requestScope.categoriesForSidebar}">
+                        <%-- Add 'active-filter' class if this category is currently selected for filtering. --%>
+                        <li <c:if test="${requestScope.selectedCategoryId == category.categoryId}">class="active-filter"</c:if>>
+                            <%-- The link points back to the GoalServlet, explicitly requesting a 'list' action
+                                 and passing the 'categoryId' as a parameter. --%>
+                            <a href="${pageContext.request.contextPath}/goals?action=list&categoryId=<c:out value="${category.categoryId}"/>">
+                                <i class="fas fa-tag"></i> <c:out value="${category.categoryName}"/>
+                            </a>
+                        </li>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <%-- Display a message if no categories exist for the user yet. --%>
+                    <li><p style="padding: 10px 15px; color: #777;">No categories found.</p></li>
+                </c:otherwise>
+            </c:choose>
+
+            <%-- Optional: Add a link to manage categories directly from the filter section too. --%>
+            <li style="border-top: 1px solid #ddd; margin-top: 10px; padding-top: 5px;"></li>
             <li><a href="${pageContext.request.contextPath}/categories"><i class="fas fa-tags"></i> Manage Categories</a></li>
-                
         </ul>
     </div>
 
     <div class="content-area">
         <h2 style="color: var(--secondary-color); margin-bottom: 25px;">My Goals</h2>
 
-        <%-- Display server-side success message if present --%>
         <c:if test="${not empty sessionScope.successMessage}">
             <div class="message success-message">
                 <p><c:out value="${sessionScope.successMessage}"/></p>
@@ -26,7 +62,6 @@
             <c:remove var="successMessage" scope="session"/>
         </c:if>
 
-        <%-- Display server-side error message if present --%>
         <c:if test="${not empty requestScope.errorMessage}">
             <div class="message error-message">
                 <p><c:out value="${requestScope.errorMessage}"/></p>
@@ -41,6 +76,7 @@
 
         <c:choose>
             <c:when test="${not empty requestScope.goals}">
+                <div class="data-card">
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -74,15 +110,27 @@
                             </c:forEach>
                         </tbody>
                     </table>
+                </div>
             </c:when>
             <c:otherwise>
                 <div class="message">
-                    <p>No goals found. Start by adding a new goal!</p>
+                    <p>No goals found <c:if test="${requestScope.selectedCategoryId > 0}">for this category</c:if>. Start by adding a new goal!</p>
                 </div>
             </c:otherwise>
         </c:choose>
     </div>
 </div>
 
-<%-- Include the common footer fragment --%>
-<jsp:include page="footer.jsp" />
+<%-- Step 4: Add CSS for active filter state --%>
+<style>
+    .sidebar ul li.active-filter a {
+        background-color: var(--primary-color); /* Highlight active filter */
+        color: var(--text-light);
+        font-weight: 600;
+    }
+    .sidebar ul li.active-filter a:hover {
+        background-color: #43A047; /* Darker green on hover for active */
+    }
+</style>
+
+<jsp.include page="footer.jsp" />
