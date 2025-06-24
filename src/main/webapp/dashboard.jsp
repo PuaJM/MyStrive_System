@@ -38,8 +38,8 @@
                 </c:when>
                 <c:otherwise>
                     <li><p style="padding: 10px 15px; color: #777;">No categories found.</p></li>
-                </c:otherwise>
-            </c:choose>
+                    </c:otherwise>
+                </c:choose>
 
             <li style="border-top: 1px solid #ddd; margin-top: 10px; padding-top: 5px;"></li>
             <li><a href="${pageContext.request.contextPath}/categories"><i class="fas fa-tags"></i> Manage Categories</a></li>
@@ -70,46 +70,44 @@
 
         <c:choose>
             <c:when test="${not empty requestScope.goals}">
-                <div class="data-card">
-                    <table class="data-table">
-                        <thead>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Target Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="goal" items="${requestScope.goals}">
                             <tr>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Target Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <td data-label="Description">
+                                    <a href="${pageContext.request.contextPath}/milestones?goalId=<c:out value="${goal.goalId}"/>" class="goal-description-link">
+                                        <c:out value="${goal.goalDescription}"/>
+                                    </a>
+                                </td>
+                                <td data-label="Category"><c:out value="${goal.categoryName != null ? goal.categoryName : 'N/A'}"/></td>
+                                <td data-label="Target Date"><fmt:formatDate value="${goal.targetDate}" pattern="yyyy-MM-dd"/></td>
+                                <td data-label="Status"><c:out value="${goal.status}"/></td>
+                                <td data-label="Actions" class="actions">
+                                    <a href="${pageContext.request.contextPath}/goals?action=edit&goalId=<c:out value="${goal.goalId}"/>" class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/goals?action=delete&goalId=<c:out value="${goal.goalId}"/>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this goal and all its milestones?');">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="goal" items="${requestScope.goals}">
-                                <tr>
-                                    <td data-label="Description">
-                                        <a href="${pageContext.request.contextPath}/milestones?goalId=<c:out value="${goal.goalId}"/>" class="goal-description-link">
-                                            <c:out value="${goal.goalDescription}"/>
-                                        </a>
-                                    </td>
-                                    <td data-label="Category"><c:out value="${goal.categoryName != null ? goal.categoryName : 'N/A'}"/></td>
-                                    <td data-label="Target Date"><fmt:formatDate value="${goal.targetDate}" pattern="yyyy-MM-dd"/></td>
-                                    <td data-label="Status"><c:out value="${goal.status}"/></td>
-                                    <td data-label="Actions" class="actions">
-                                        <a href="${pageContext.request.contextPath}/goals?action=edit&goalId=<c:out value="${goal.goalId}"/>" class="btn btn-secondary btn-sm">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </a>
-                                        <a href="${pageContext.request.contextPath}/goals?action=delete&goalId=<c:out value="${goal.goalId}"/>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this goal and all its milestones?');">
-                                            <i class="fas fa-trash-alt"></i> Delete
-                                        </a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
+                        </c:forEach>
+                    </tbody>
+                </table>
             </c:when>
             <c:otherwise>
                 <div class="message">
                     <p>No goals found <c:if test="${requestScope.selectedCategoryId > 0}">for this category</c:if>. Start by adding a new goal!</p>
-                </div>
+                    </div>
             </c:otherwise>
         </c:choose>
     </div>

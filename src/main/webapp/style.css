@@ -28,9 +28,9 @@ body {
     line-height: 1.6;
     color: var(--text-dark);
     background-color: var(--background-light);
-    min-height: 100vh; 
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
     display: flex;
-    flex-direction: column; 
+    flex-direction: column; /* For sticky footer */
 }
 
 a {
@@ -62,7 +62,7 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; 
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .logo {
@@ -80,8 +80,8 @@ a:hover {
 .navbar {
     display: flex;
     align-items: center;
-    flex-grow: 1;
-    justify-content: flex-end; 
+    flex-grow: 1; /* Allow navbar to take available space */
+    justify-content: flex-end; /* Push nav items to the right */
     flex-wrap: wrap;
 }
 
@@ -132,8 +132,8 @@ a:hover {
 
 /* Main Content Area */
 .main-content {
-    flex-grow: 1; 
-    padding: 30px 0;
+    flex-grow: 1; /* Allows main content to expand and push footer down */
+    padding: 30px 0; /* Keep this for other pages using main-content container */
 }
 
 /* Footer Styles */
@@ -142,27 +142,27 @@ a:hover {
     color: var(--text-light);
     text-align: center;
     padding: 20px 0;
-    margin-top: auto; 
+    margin-top: auto; /* Pushes footer to the bottom */
     box-shadow: 0 -2px 5px var(--shadow-light);
 }
 
 /* Form Styles */
-.form-card { 
+.form-card {
     background-color: var(--card-bg);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px var(--shadow-light);
-    max-width: 600px; 
-    margin: 30px auto; 
+    max-width: 600px;
+    margin: 30px auto;
 }
 
-.data-card { 
+.data-card {
     background-color: var(--card-bg);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px var(--shadow-light);
     margin-bottom: 30px;
-    overflow-x: auto; 
+    overflow-x: auto;
 }
 
 
@@ -199,7 +199,7 @@ a:hover {
 .form-group select:focus,
 .form-group textarea:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Primary color with transparency */
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
     outline: none;
 }
 
@@ -279,7 +279,6 @@ a:hover {
     background-color: var(--card-bg);
     border-radius: 10px;
     overflow: hidden; /* For rounded corners on table */
-    /* box-shadow: 0 4px 15px var(--shadow-light); - this is now on data-card */
 }
 
 .data-table th,
@@ -342,14 +341,13 @@ a:hover {
 .dashboard-layout {
     display: flex;
     gap: 30px;
-    /* Changed padding to add vertical space for the layout */
-    padding: 30px 20px; /* Added vertical padding */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    align-items: flex-start; /* Align items to the top */
+    padding: 30px 20px;
+    flex-wrap: wrap; /* Allows wrapping if content becomes too wide, but prefers row */
+    align-items: flex-start;
 }
 
 .sidebar {
-    flex: 0 0 250px; /* Fixed width sidebar, no shrink, no grow */
+    flex: 0 0 250px; /* Fixed width sidebar */
     background-color: var(--card-bg);
     padding: 20px;
     border-radius: 10px;
@@ -387,23 +385,22 @@ a:hover {
 }
 
 .sidebar ul li.active-filter a {
-    background-color: var(--primary-color); /* Highlight active filter */
+    background-color: var(--primary-color);
     color: var(--text-light);
     font-weight: 600;
 }
 .sidebar ul li.active-filter a:hover {
-    background-color: #43A047; /* Darker green on hover for active */
+    background-color: #43A047;
+    text-decoration: none;
 }
 
 .content-area {
     flex-grow: 1; /* Takes up remaining space */
-    min-width: 300px; /* Minimum width before wrapping */
-    /* Removed margin-top to avoid extra space above "My Goals" title if dashboard-layout provides top padding */
+    min-width: 300px; /* Minimum width before wrapping occurs */
     margin-top: 0;
 }
-/* Ensure the content-area itself doesn't have unintended background or padding that creates a "white layer" */
 .content-area > h2 {
-    margin-top: 0; /* Adjust if needed to control spacing from top of content-area */
+    margin-top: 0;
 }
 
 
@@ -440,8 +437,9 @@ a:hover {
     padding-bottom: 10px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
+
+    
     .header-content {
         flex-direction: column;
         align-items: flex-start;
@@ -479,23 +477,10 @@ a:hover {
         margin-top: 15px;
         margin-left: 0;
         width: 100%;
-        justify-content: center; /* Center user info on small screens */
+        justify-content: center;
     }
 
-    .dashboard-layout {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        flex: 0 0 100%; /* Full width sidebar */
-        width: 100%;
-    }
-
-    .content-area {
-        width: 100%;
-    }
-
-    .form-card, .data-card {
+    .form-card {
         padding: 20px;
         margin: 20px auto;
     }
@@ -506,12 +491,12 @@ a:hover {
     }
 
     .btn {
-        width: 100%; /* Full width buttons on small screens */
+        width: 100%;
     }
 
-    /* Table responsiveness for smaller screens */
+    /* Table responsiveness: transforming table rows into stacked cards */
     .data-table thead {
-        display: none; /* Hide header on small screens */
+        display: none;
     }
 
     .data-table, .data-table tbody, .data-table tr, .data-table td {
@@ -542,7 +527,7 @@ a:hover {
         content: attr(data-label);
         position: absolute;
         left: 10px;
-        width: 45%; 
+        width: 45%;
         padding-right: 10px;
         white-space: nowrap;
         text-align: left;
@@ -551,7 +536,7 @@ a:hover {
     }
 
     .data-table .actions {
-        justify-content: flex-end; /* Align action buttons to the right */
+        justify-content: flex-end;
         padding-top: 10px;
     }
 }
