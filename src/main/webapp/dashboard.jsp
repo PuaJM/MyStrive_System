@@ -8,7 +8,7 @@
     to filter goals by specific categories.
 --%>
 <%-- Step 1: Include the common header fragment. --%>
-<jsp.include page="header.jsp" />
+<jsp:include page="header.jsp" />
 
 <div class="dashboard-layout">
     <div class="sidebar">
@@ -121,16 +121,4 @@
     </div>
 </div>
 
-<%-- Step 4: Add CSS for active filter state --%>
-<style>
-    .sidebar ul li.active-filter a {
-        background-color: var(--primary-color); /* Highlight active filter */
-        color: var(--text-light);
-        font-weight: 600;
-    }
-    .sidebar ul li.active-filter a:hover {
-        background-color: #43A047; /* Darker green on hover for active */
-    }
-</style>
-
-<jsp.include page="footer.jsp" />
+<jsp:include page="footer.jsp" />

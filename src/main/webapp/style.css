@@ -374,6 +374,15 @@ a:hover {
     text-decoration: none;
 }
 
+.sidebar ul li.active-filter a {
+    background-color: var(--primary-color); /* Highlight active filter */
+    color: var(--text-light);
+    font-weight: 600;
+}
+.sidebar ul li.active-filter a:hover {
+    background-color: #43A047; /* Darker green on hover for active */
+}
+
 .content-area {
     flex-grow: 1; /* Takes up remaining space */
     min-width: 300px; /* Minimum width before wrapping */
