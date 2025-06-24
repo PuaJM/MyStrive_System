@@ -70,16 +70,16 @@ public class GoalServlet extends HttpServlet {
         LOGGER.log(Level.INFO, "Received GET request for /goals.");
 
         HttpSession session = request.getSession(false);
-        // --- Updated: Check for "user" attribute instead of "currentUser" ---
-        // Consistency with LoginServlet where "user" is set in session.
-        if (session == null || session.getAttribute("user") == null) {
+        // --- Updated: Check for "currentUser" attribute ---
+        // Consistency with LoginServlet where "currentUser" is set in session.
+        if (session == null || session.getAttribute("currentUser") == null) {
             LOGGER.log(Level.WARNING, "Unauthorized access to GoalServlet (GET). Redirecting to login.jsp.");
             response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
-        // --- Updated: Retrieve "user" attribute from session ---
-        User currentUser = (User) session.getAttribute("user");
+        // --- Updated: Retrieve "currentUser" attribute from session ---
+        User currentUser = (User) session.getAttribute("currentUser");
         int userId = currentUser.getUserId();
 
         String action = request.getParameter("action");
@@ -295,15 +295,15 @@ public class GoalServlet extends HttpServlet {
         LOGGER.log(Level.INFO, "Received POST request for /goals. Processing goal data.");
 
         HttpSession session = request.getSession(false);
-        // --- Updated: Check for "user" attribute instead of "currentUser" ---
-        if (session == null || session.getAttribute("user") == null) {
+        // --- Updated: Check for "currentUser" attribute ---
+        if (session == null || session.getAttribute("currentUser") == null) {
             LOGGER.log(Level.WARNING, "Unauthorized access to GoalServlet (POST). Redirecting to login.jsp.");
             response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
-        // --- Updated: Retrieve "user" attribute from session ---
-        User currentUser = (User) session.getAttribute("user");
+        // --- Updated: Retrieve "currentUser" attribute from session ---
+        User currentUser = (User) session.getAttribute("currentUser");
         int userId = currentUser.getUserId();
 
         String action = request.getParameter("action");
@@ -340,11 +340,11 @@ public class GoalServlet extends HttpServlet {
                 errorMessage = "Invalid category ID format.";
                 LOGGER.log(Level.WARNING, "Invalid categoryId format: {0}", categoryIdStr); // --- Added logging ---
             } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "An unexpected error occurred during goal operation (GET): " + e.getMessage(), e);
-            request.setAttribute("errorMessage", "An unexpected error occurred. Please try again later.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-            dispatcher.forward(request, response);
-        }
+                LOGGER.log(Level.SEVERE, "An unexpected error occurred during goal operation (GET): " + e.getMessage(), e);
+                request.setAttribute("errorMessage", "An unexpected error occurred. Please try again later.");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
             
         }
         // If categoryIdStr is empty, it means "No Category" is selected, so categoryId remains null.
