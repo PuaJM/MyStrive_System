@@ -28,9 +28,9 @@ body {
     line-height: 1.6;
     color: var(--text-dark);
     background-color: var(--background-light);
-    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    min-height: 100vh; 
     display: flex;
-    flex-direction: column; /* For sticky footer */
+    flex-direction: column; 
 }
 
 a {
@@ -62,7 +62,7 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    flex-wrap: wrap; 
 }
 
 .logo {
@@ -80,8 +80,8 @@ a:hover {
 .navbar {
     display: flex;
     align-items: center;
-    flex-grow: 1; /* Allow navbar to take available space */
-    justify-content: flex-end; /* Push nav items to the right */
+    flex-grow: 1;
+    justify-content: flex-end; 
     flex-wrap: wrap;
 }
 
@@ -132,7 +132,7 @@ a:hover {
 
 /* Main Content Area */
 .main-content {
-    flex-grow: 1; /* Allows main content to expand and push footer down */
+    flex-grow: 1; 
     padding: 30px 0;
 }
 
@@ -142,19 +142,29 @@ a:hover {
     color: var(--text-light);
     text-align: center;
     padding: 20px 0;
-    margin-top: auto; /* Pushes footer to the bottom */
+    margin-top: auto; 
     box-shadow: 0 -2px 5px var(--shadow-light);
 }
 
 /* Form Styles */
-.form-card, .data-card {
+.form-card { 
     background-color: var(--card-bg);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px var(--shadow-light);
-    max-width: 600px;
-    margin: 30px auto;
+    max-width: 600px; 
+    margin: 30px auto; 
 }
+
+.data-card { 
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px var(--shadow-light);
+    margin-bottom: 30px;
+    overflow-x: auto; 
+}
+
 
 .form-group {
     margin-bottom: 20px;
@@ -263,13 +273,13 @@ a:hover {
 
 /* Table Styles */
 .data-table {
-    width: 100%;
+    width: 100%; /* Ensure table takes full width of its container */
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 0; /* Remove top margin if data-card has padding */
     background-color: var(--card-bg);
     border-radius: 10px;
     overflow: hidden; /* For rounded corners on table */
-    box-shadow: 0 4px 15px var(--shadow-light);
+    /* box-shadow: 0 4px 15px var(--shadow-light); - this is now on data-card */
 }
 
 .data-table th,
@@ -277,6 +287,7 @@ a:hover {
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
+    white-space: nowrap; /* Prevent text wrapping in table cells by default */
 }
 
 .data-table th {
@@ -331,7 +342,8 @@ a:hover {
 .dashboard-layout {
     display: flex;
     gap: 30px;
-    padding: 0 20px;
+    /* Changed padding to add vertical space for the layout */
+    padding: 30px 20px; /* Added vertical padding */
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
     align-items: flex-start; /* Align items to the top */
 }
@@ -386,7 +398,14 @@ a:hover {
 .content-area {
     flex-grow: 1; /* Takes up remaining space */
     min-width: 300px; /* Minimum width before wrapping */
+    /* Removed margin-top to avoid extra space above "My Goals" title if dashboard-layout provides top padding */
+    margin-top: 0;
 }
+/* Ensure the content-area itself doesn't have unintended background or padding that creates a "white layer" */
+.content-area > h2 {
+    margin-top: 0; /* Adjust if needed to control spacing from top of content-area */
+}
+
 
 /* Specific styles for goal details and milestones */
 .goal-details-card {
@@ -488,6 +507,52 @@ a:hover {
 
     .btn {
         width: 100%; /* Full width buttons on small screens */
+    }
+
+    /* Table responsiveness for smaller screens */
+    .data-table thead {
+        display: none; /* Hide header on small screens */
+    }
+
+    .data-table, .data-table tbody, .data-table tr, .data-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .data-table tr {
+        margin-bottom: 15px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px var(--shadow-light);
+    }
+
+    .data-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border-bottom: 1px dashed var(--border-color);
+    }
+
+    .data-table td:last-child {
+        border-bottom: none;
+    }
+
+    .data-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%; 
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .data-table .actions {
+        justify-content: flex-end; /* Align action buttons to the right */
+        padding-top: 10px;
     }
 }
 
