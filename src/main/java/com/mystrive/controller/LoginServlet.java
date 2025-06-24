@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
             if (authenticatedUser != null) {
                 // Login successful, set user in session
                 HttpSession session = request.getSession();
-                session.setAttribute("currentUser", authenticatedUser);
+                session.setAttribute("user", authenticatedUser);
                 session.setMaxInactiveInterval(30 * 60); // Session timeout in seconds (30 minutes)
                 LOGGER.log(Level.INFO, "User {0} successfully logged in and session created.", username);
 
