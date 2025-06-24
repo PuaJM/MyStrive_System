@@ -7,16 +7,14 @@
     for the currently logged-in user. It now features enhanced sidebar navigation
     to filter goals by specific categories.
 --%>
-<%-- Step 1: Include the common header fragment. --%>
+
 <jsp:include page="header.jsp" />
 
 <div class="dashboard-layout">
     <div class="sidebar">
         <h3>Navigation</h3>
         <ul>
-            <%-- Step 2: "All Goals" Filter Link. --%>
-            <%-- This link ensures the user can always revert to viewing all their goals,
-                 regardless of any active category filter. --%>
+
             <li <c:if test="${requestScope.selectedCategoryId == 0}">class="active-filter"</c:if>>
                 <a href="${pageContext.request.contextPath}/goals"><i class="fas fa-bullseye"></i> All Goals</a>
             </li>
@@ -24,16 +22,14 @@
             <li style="border-bottom: 1px solid #ddd; margin-bottom: 10px; padding-bottom: 5px;"></li>
 
             <h3>Categories</h3>
-            <%-- Step 3: Loop to Display Category Filter Links. --%>
-            <%-- This loop iterates through the 'categoriesForSidebar' list provided by GoalServlet.
-                 Each category becomes a clickable link to filter goals. --%>
+
             <c:choose>
                 <c:when test="${not empty requestScope.categoriesForSidebar}">
                     <c:forEach var="category" items="${requestScope.categoriesForSidebar}">
                         <%-- Add 'active-filter' class if this category is currently selected for filtering. --%>
                         <li <c:if test="${requestScope.selectedCategoryId == category.categoryId}">class="active-filter"</c:if>>
                             <%-- The link points back to the GoalServlet, explicitly requesting a 'list' action
-                                 and passing the 'categoryId' as a parameter. --%>
+                                and passing the 'categoryId' as a parameter. --%>
                             <a href="${pageContext.request.contextPath}/goals?action=list&categoryId=<c:out value="${category.categoryId}"/>">
                                 <i class="fas fa-tag"></i> <c:out value="${category.categoryName}"/>
                             </a>
@@ -41,12 +37,10 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <%-- Display a message if no categories exist for the user yet. --%>
                     <li><p style="padding: 10px 15px; color: #777;">No categories found.</p></li>
                 </c:otherwise>
             </c:choose>
 
-            <%-- Optional: Add a link to manage categories directly from the filter section too. --%>
             <li style="border-top: 1px solid #ddd; margin-top: 10px; padding-top: 5px;"></li>
             <li><a href="${pageContext.request.contextPath}/categories"><i class="fas fa-tags"></i> Manage Categories</a></li>
         </ul>
@@ -90,15 +84,15 @@
                         <tbody>
                             <c:forEach var="goal" items="${requestScope.goals}">
                                 <tr>
-                                    <td>
+                                    <td data-label="Description">
                                         <a href="${pageContext.request.contextPath}/milestones?goalId=<c:out value="${goal.goalId}"/>" class="goal-description-link">
                                             <c:out value="${goal.goalDescription}"/>
                                         </a>
                                     </td>
-                                    <td><c:out value="${goal.categoryName != null ? goal.categoryName : 'N/A'}"/></td>
-                                    <td><fmt:formatDate value="${goal.targetDate}" pattern="yyyy-MM-dd"/></td>
-                                    <td><c:out value="${goal.status}"/></td>
-                                    <td class="actions">
+                                    <td data-label="Category"><c:out value="${goal.categoryName != null ? goal.categoryName : 'N/A'}"/></td>
+                                    <td data-label="Target Date"><fmt:formatDate value="${goal.targetDate}" pattern="yyyy-MM-dd"/></td>
+                                    <td data-label="Status"><c:out value="${goal.status}"/></td>
+                                    <td data-label="Actions" class="actions">
                                         <a href="${pageContext.request.contextPath}/goals?action=edit&goalId=<c:out value="${goal.goalId}"/>" class="btn btn-secondary btn-sm">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
